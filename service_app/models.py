@@ -1,9 +1,14 @@
 from random import choice
 from django.db import models
 from datetime import datetime
+import uuid
+from django.urls import reverse 
+
 
 class Clients(models.Model):
  # Fields
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this client")
+    book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
     name_of_services = models.CharField(max_length=20, help_text="Enter the name of service", blank=False,)
     service_place = models.CharField(max_length=20, help_text="Select service place", blank=False) 
     #choices=("at home", "in our salon", "event"))
@@ -14,6 +19,10 @@ class Clients(models.Model):
     client_point_of_service=models.IntegerField(help_text="Enter client's point")
     comment=models.TextField(max_length=250)
     ...
+
+    def get_absolute_url(self):
+       return reverse('client-detail', args=[str(self.id)])
+
     def __str__(self):
       return self.client_name
 
@@ -25,6 +34,7 @@ class Clients(models.Model):
         return self.client_name
 
 class Services(models.Model):
+    id_service = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this service")
     SERVICES=[
         ("Make-up","Makeup"),
         ("Nails","Nail service"),
@@ -37,6 +47,8 @@ class Services(models.Model):
     service_duration=models.IntegerField(help_text="Enter service duration", blank=False)
     name_of_master=models.TextField(max_length=30, help_text="Enter the name of master")
     ...
+    def get_absolute_url(self):
+       return reverse('client-detail', args=[str(self.id_service)])
     def __str__(self):
         return self.type_of_service
 
