@@ -8,7 +8,6 @@ from django.urls import reverse
 class Clients(models.Model):
  # Fields
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this client")
-    book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
     name_of_services = models.CharField(max_length=20, help_text="Enter the name of service", blank=False,)
     service_place = models.CharField(max_length=20, help_text="Select service place", blank=False) 
     #choices=("at home", "in our salon", "event"))
@@ -48,7 +47,8 @@ class Services(models.Model):
     name_of_master=models.TextField(max_length=30, help_text="Enter the name of master")
     ...
     def get_absolute_url(self):
-       return reverse('client-detail', args=[str(self.id_service)])
+       return reverse('service-detail', args=[str(self.id_service)])
+
     def __str__(self):
         return self.type_of_service
 
