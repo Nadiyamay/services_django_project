@@ -16,10 +16,18 @@ Including another URLconf
 from django.contrib import admin
 
 
-from django.urls import path
+from django.urls import path, re_path
 from django.urls.conf import include
+from rest_framework.urlpatterns import format_suffix_patterns
+from service_app import views
 
-urlpatterns=[
-    path("admin/", admin.site.urls),
-    path("service-app", include('service_app.urls'))
+
+
+urlpatterns = [
+    path('clients/', views.clients_list),
+    path('clients/<int:pk>', views.clients_detail),
+    path('services/', views.services_list),
+    path('services/<int:pk>', views.services_detail),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
